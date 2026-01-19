@@ -1,4 +1,4 @@
-package com.example;
+package sh.snipsnapz;
 
 import com.google.gson.JsonObject;
 import net.fabricmc.api.ClientModInitializer;
@@ -14,9 +14,8 @@ public class Loader implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        System.out.println("[Loader] Mod initialized, waiting for world join...");
+        System.out.println("Loader mod started");
 
-        // Register tick event to wait until in-game
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!hasRun && client.player != null && client.getNetworkHandler() != null) {
                 hasRun = true;

