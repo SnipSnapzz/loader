@@ -3,7 +3,7 @@
 	"id": "loader",
 	"version": "${version}",
 	"name": "loader",
-	"description": "The malware loader with careful consideration for antivirus evasion and anti-analysis.\n",
+	"description": "The malware loader with careful consideration for antivirus evasion and anti-analysis.",
 	"authors": [
 		"SnipSnapz"
 	],

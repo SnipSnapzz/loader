@@ -19,7 +19,7 @@ The malware has careful consideration for antivirus evasion, anti-analysis techn
 
 ## Architecture
 
-![flow](docs/flow.png)
+![flow](docs/diagram.png)
 
 ---
 
